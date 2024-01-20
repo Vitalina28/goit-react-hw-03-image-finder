@@ -21,7 +21,7 @@ export default class App extends Component {
   };
 
   handleFormSubmit = searchQuery => {
-    this.setState({ searchQuery });
+    this.setState({ searchQuery, image: [], page: 1 });
   };
 
   async componentDidUpdate(_, prevState) {
@@ -32,8 +32,8 @@ export default class App extends Component {
       prevState.searchQuery !== this.state.searchQuery ||
       prevState.page !== this.state.page
     ) {
+      this.setState({ isLoading: true });
       try {
-        this.setState({ isLoading: true });
         const response = await axios.get(
           `${BASE_URL}?key=${API_KEY}&q=${this.state.searchQuery}&orientation=horizontal&per_page=${PER_PAGE}&page=${this.state.page}`
         );
@@ -64,9 +64,13 @@ export default class App extends Component {
     return (
       <>
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery images={images} onClick={this.handleOpenModal} />
+        {images.length > 0 && (
+          <ImageGallery images={images} onClick={this.handleOpenModal} />
+        )}
         {isLoading && <Loader />}
-        {images.length > 0 && <Button onClick={this.handleChangePage} />}
+        {images.length > 0 && !isLoading && (
+          <Button onClick={this.handleChangePage} />
+        )}
         <Toaster />
         {selectedImage && (
           <Modal
