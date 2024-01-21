@@ -21,7 +21,7 @@ export default class App extends Component {
   };
 
   handleFormSubmit = async searchQuery => {
-    this.setState({ searchQuery, images: [], page: 1, isLoading: true });
+    this.setState({ searchQuery, images: [], page: 1 });
   };
 
   async componentDidUpdate(_, prevState) {
