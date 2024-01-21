@@ -20,8 +20,8 @@ export default class App extends Component {
     selectedImage: '',
   };
 
-  handleFormSubmit = searchQuery => {
-    this.setState({ searchQuery, image: [], page: 1 });
+  handleFormSubmit = async searchQuery => {
+    this.setState({ searchQuery, images: [], page: 1, isLoading: true });
   };
 
   async componentDidUpdate(_, prevState) {
@@ -37,7 +37,9 @@ export default class App extends Component {
         const response = await axios.get(
           `${BASE_URL}?key=${API_KEY}&q=${this.state.searchQuery}&orientation=horizontal&per_page=${PER_PAGE}&page=${this.state.page}`
         );
-        this.setState({ images: response.data.hits });
+        this.setState(prevState => ({
+          images: [...prevState.images, ...response.data.hits],
+        }));
       } catch (error) {
         toast.error('Reload the page and try again');
       } finally {
