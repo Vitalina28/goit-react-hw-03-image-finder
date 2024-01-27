@@ -24,7 +24,7 @@ export class Modal extends Component {
       <div className={css.Overlay} onClick={this.props.onClose}>
         <div className={css.Modal}>
           <img
-            src={this.props.selectedImage.largeImageURL}
+            src={this.props.selectedImage}
             alt={this.props.selectedImage.tags}
           />
         </div>
